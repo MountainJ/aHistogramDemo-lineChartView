@@ -81,7 +81,7 @@
 //横坐标标题数组
 - (NSArray *)JAYChart_xLableArray:(JAYChart *)chart
 {
-    NSArray  *xLabels = @[@"时间1100000",@"时间2\n999",@"时间3",@"时间4",@"时间5",@"时间6",@"时间7",@"时间8",@"时间9",@"时间10",@"时间11",@"时间12"];
+    NSArray  *xLabels = @[@"12/09\n18:09",@"12/09\n18:09",@"12/09\n18:09",@"12/09\n18:09",@"12/09\n18:09",@"12/09\n18:09",@"12/09\n18:09",@"12/09\n18:09",@"12/09\n18:09",@"12/09\n18:09",@"12/09\n18:09",@"12/09\n18:09"];
     return xLabels;
 }
 
@@ -91,7 +91,7 @@
     NSArray *ary = @[@"99",@"88",@"85",@"89",@"92",@"100",@"111",@"100",@"98",@"112",@"112",@"96"];
     NSArray *ary1 = @[@"81",@"77",@"68",@"78",@"72",@"73",@"82",@"83",@"80",@"85",@"90",@"68"];
 //    NSArray *ary2 = @[@"70",@"55",@"69",@"59",@"102",@"104",@"121",@"99",@"96",@"39",@"77",@"84"];
-    NSArray  *yValues = @[ary1];//1组数据
+    NSArray  *yValues = @[ary];//1组数据
     yValues = @[ary,ary1];//2组数据
 //    yValues = @[ary,ary1,ary2];//3组数据
     return yValues;
@@ -101,12 +101,12 @@
 - (CGRange)JAYChartChooseRangeInLineChart:(JAYChart *)chart
 {
         //这里设置的是需要正常显示的范围,即最大值最小值
-        return CGRangeMake(170, 30);
+        return CGRangeMake(135, 40);
 }
 //2组数值区域
 - (JAYGroupRange)JAYGroupChartMarkRangeInLineChart:(JAYChart *)chart
 {
-    CGRange range1 = CGRangeMake(140, 90);
+    CGRange range1 = CGRangeMake(135, 100);
     CGRange range2 = CGRangeMake(90, 60);
     return JAYGroupRangeMake(range1, range2);
     
@@ -115,7 +115,7 @@
 //设置正常范围需要渲染的背景
 - (CGRange)JAYChartMarkRangeInLineChart:(JAYChart *)chart
 {
-    return CGRangeMake(120, 60);
+    return CGRangeMake(135, 65);
 }
 
 //设置多组数据不同柱状条颜色

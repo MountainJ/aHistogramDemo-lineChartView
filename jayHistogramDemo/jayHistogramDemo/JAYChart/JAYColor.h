@@ -18,7 +18,8 @@
 #define JAYYLabelwidth     30
 #define JAYTagLabelwidth     80
 
-#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+#define kScreenWidth  [UIScreen mainScreen].bounds.size.width
+#define kScreenHeight [UIScreen mainScreen].bounds.size.height
 
 #define JAYGrey         [UIColor colorWithRed:246.0/255.0 green:246.0/255.0 blue:246.0/255.0 alpha:1.0f]
 #define JAYLightBlue    [UIColor colorWithRed:94.0/255.0 green:147.0/255.0 blue:196.0/255.0 alpha:1.0f]
