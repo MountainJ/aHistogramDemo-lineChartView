@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7B99C7751BF5821100BC925B /* JAYBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C76A1BF5821100BC925B /* JAYBar.m */; settings = {ASSET_TAGS = (); }; };
-		7B99C7761BF5821100BC925B /* JAYBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C76C1BF5821100BC925B /* JAYBarChart.m */; settings = {ASSET_TAGS = (); }; };
-		7B99C7771BF5821100BC925B /* JAYChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C76E1BF5821100BC925B /* JAYChart.m */; settings = {ASSET_TAGS = (); }; };
-		7B99C7781BF5821100BC925B /* JAYChartLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C7701BF5821100BC925B /* JAYChartLabel.m */; settings = {ASSET_TAGS = (); }; };
-		7B99C7791BF5821100BC925B /* JAYColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C7721BF5821100BC925B /* JAYColor.m */; settings = {ASSET_TAGS = (); }; };
-		7B99C77A1BF5821100BC925B /* JAYLineChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C7741BF5821100BC925B /* JAYLineChart.m */; settings = {ASSET_TAGS = (); }; };
+		7B99C7751BF5821100BC925B /* JAYBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C76A1BF5821100BC925B /* JAYBar.m */; };
+		7B99C7761BF5821100BC925B /* JAYBarChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C76C1BF5821100BC925B /* JAYBarChart.m */; };
+		7B99C7771BF5821100BC925B /* JAYChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C76E1BF5821100BC925B /* JAYChart.m */; };
+		7B99C7781BF5821100BC925B /* JAYChartLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C7701BF5821100BC925B /* JAYChartLabel.m */; };
+		7B99C7791BF5821100BC925B /* JAYColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C7721BF5821100BC925B /* JAYColor.m */; };
+		7B99C77A1BF5821100BC925B /* JAYLineChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99C7741BF5821100BC925B /* JAYLineChart.m */; };
 		7BA6B1EF1BF1C2C300170BAA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA6B1EE1BF1C2C300170BAA /* main.m */; };
 		7BA6B1F21BF1C2C300170BAA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA6B1F11BF1C2C300170BAA /* AppDelegate.m */; };
 		7BA6B1F51BF1C2C300170BAA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BA6B1F41BF1C2C300170BAA /* ViewController.m */; };
@@ -106,10 +106,10 @@
 				7B99C76A1BF5821100BC925B /* JAYBar.m */,
 				7B99C76B1BF5821100BC925B /* JAYBarChart.h */,
 				7B99C76C1BF5821100BC925B /* JAYBarChart.m */,
-				7B99C76D1BF5821100BC925B /* JAYChart.h */,
-				7B99C76E1BF5821100BC925B /* JAYChart.m */,
 				7B99C76F1BF5821100BC925B /* JAYChartLabel.h */,
 				7B99C7701BF5821100BC925B /* JAYChartLabel.m */,
+				7B99C76D1BF5821100BC925B /* JAYChart.h */,
+				7B99C76E1BF5821100BC925B /* JAYChart.m */,
 				7B99C7711BF5821100BC925B /* JAYColor.h */,
 				7B99C7721BF5821100BC925B /* JAYColor.m */,
 				7B99C7731BF5821100BC925B /* JAYLineChart.h */,

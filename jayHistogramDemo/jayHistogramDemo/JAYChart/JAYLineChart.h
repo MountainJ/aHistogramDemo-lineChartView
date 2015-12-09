@@ -30,8 +30,10 @@
 @property (nonatomic) CGFloat xLabelWidth;
 @property (nonatomic) CGFloat yValueMin;
 @property (nonatomic) CGFloat yValueMax;
-
+//1组
 @property (nonatomic, assign) CGRange markRange;
+//2组
+@property (nonatomic,assign) JAYGroupRange groupMarkRange;
 
 @property (nonatomic, assign) CGRange chooseRange;
 
@@ -39,6 +41,10 @@
 
 @property (nonatomic, retain) NSMutableArray *ShowHorizonLine;
 @property (nonatomic, retain) NSMutableArray *ShowMaxMinArray;
+/**
+ *  显示点的数值
+ */
+@property (nonatomic,assign,getter=isShowTextValue) BOOL showTextValue;
 
 -(void)strokeChart;
 

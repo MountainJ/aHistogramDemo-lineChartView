@@ -40,6 +40,9 @@ typedef enum {
 //标记数值区域
 - (CGRange)JAYChartMarkRangeInLineChart:(JAYChart *)chart;
 
+//2组数值区域
+- (JAYGroupRange)JAYGroupChartMarkRangeInLineChart:(JAYChart *)chart;
+
 //判断显示横线条
 - (BOOL)JAYChart:(JAYChart *)chart ShowHorizonLineAtIndex:(NSInteger)index;
 

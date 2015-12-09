@@ -10,13 +10,28 @@
 #import "JAYColor.h"
 #import "JAYChartLabel.h"
 
+/*
+ 1.需要根据正常值的范围，画出正常值的背景色； 已经给出了背景渲染
+ 
+ 2.值不在正常范围的数据点颜色进行特殊备注；
+ 
+ 3.两组曲线的时候，底部添加图线的说明；
+ 
+ 4.横轴时间的数值显示格式；
+ 
+ */
+
 
 #define kMaxXLabels 6  //单屏显示最多数据条数
 #define kMinXLabelS  4  //单屏显示最少数据条数
+#define kDotWH 8 //画图点的宽高
+
+#define kYLableNumbers (5.0) //纵轴显示数值单位个数
 
 @interface JAYLineChart ()
 {
     UIScrollView *_myScrollView;
+    CGFloat  _xAxisLengh;
 }
 
 @end
@@ -32,6 +47,8 @@
         // Initialization code
         self.clipsToBounds = YES;
         _myScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+//        _myScrollView.backgroundColor = [UIColor orangeColor];
+//        _myScrollView.contentSize = CGSizeMake(frame.size.width, 0);
         _myScrollView.contentOffset = CGPointMake(0, 0);
         [self addSubview:_myScrollView];
 
@@ -75,26 +92,35 @@
         _yValueMax = _chooseRange.max;
         _yValueMin = _chooseRange.min;
     }
-
-    float level = (_yValueMax-_yValueMin) /4.0;
+   //Y轴设置5个标度
+    float level = (_yValueMax-_yValueMin) /(kYLableNumbers-1);
     CGFloat chartCavanHeight = self.frame.size.height - JAYLabelHeight*3;
-    CGFloat levelHeight = chartCavanHeight /4.0;
-    
-    for (int i=0; i<5; i++) {
-        JAYChartLabel * label = [[JAYChartLabel alloc] initWithFrame:CGRectMake(0.0,chartCavanHeight-i*levelHeight+5, JAYYLabelwidth, JAYLabelHeight)];
-        label.backgroundColor = [UIColor yellowColor];
+    CGFloat levelHeight = chartCavanHeight /(kYLableNumbers-1);
+#warning 这里设置Y轴显示的数值个数
+    for (int i=0; i<kYLableNumbers; i++) {
+        JAYChartLabel * label = [[JAYChartLabel alloc] initWithFrame:CGRectMake(0.0,chartCavanHeight-i*levelHeight+JAYLabelHeight/2.0, JAYYLabelwidth, JAYLabelHeight)];
+//        label.backgroundColor = [UIColor yellowColor];
 		label.text = [NSString stringWithFormat:@"%d",(int)(level * i+_yValueMin)];
 		[self addSubview:label];
-        NSLog(@"_yValueMax==%f//////_yValueMin==%f",_yValueMax,_yValueMin);
     }
-    
-    if ([super respondsToSelector:@selector(setMarkRange:)]) {
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, (1-(_markRange.max-_yValueMin)/(_yValueMax-_yValueMin))*chartCavanHeight+JAYLabelHeight, self.frame.size.width-JAYYLabelwidth, (_markRange.max-_markRange.min)/(_yValueMax-_yValueMin)*chartCavanHeight)];
-        view.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.1];
+#pragma mark -这里设置正常范围需要突出的背景色
+//    if ([super respondsToSelector:@selector(setMarkRange:)]) {
+//        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, (1-(_markRange.max-_yValueMin)/(_yValueMax-_yValueMin))*chartCavanHeight+JAYLabelHeight,_xAxisLengh, (_markRange.max-_markRange.min)/(_yValueMax-_yValueMin)*chartCavanHeight)];
+//        view.backgroundColor = [[UIColor redColor] colorWithAlphaComponent:0.1];
+//        [_myScrollView addSubview:view];
+//    }
+    if ([super respondsToSelector:@selector(setGroupMarkRange:)]) {
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, (1-(_groupMarkRange.range1.max-_yValueMin)/(_yValueMax-_yValueMin))*chartCavanHeight+JAYLabelHeight,_xAxisLengh, (_groupMarkRange.range1.max-_groupMarkRange.range1.min)/(_yValueMax-_yValueMin)*chartCavanHeight)];
+        
+        view.backgroundColor = [_colors[0] colorWithAlphaComponent:0.4];
         [_myScrollView addSubview:view];
+        //
+        UIView *view2 = [[UIView alloc]initWithFrame:CGRectMake(0, (1-(_groupMarkRange.range2.max-_yValueMin)/(_yValueMax-_yValueMin))*chartCavanHeight+JAYLabelHeight,_xAxisLengh, (_groupMarkRange.range2.max-_groupMarkRange.range2.min)/(_yValueMax-_yValueMin)*chartCavanHeight)];
+        view2.backgroundColor = [_colors[1] colorWithAlphaComponent:0.4];
+        [_myScrollView addSubview:view2];
     }
     //画横线
-    for (int i=0; i<5; i++) {
+    for (int i=0; i<kYLableNumbers; i++) {
         if ([_ShowHorizonLine[i] integerValue]>0) {
             CAShapeLayer *shapeLayer = [CAShapeLayer layer];
             UIBezierPath *path = [UIBezierPath bezierPath];
@@ -102,9 +128,9 @@
             [path addLineToPoint:CGPointMake(self.frame.size.width,JAYLabelHeight+i*levelHeight)];
             [path closePath];
             shapeLayer.path = path.CGPath;
-            shapeLayer.strokeColor = [[[UIColor blackColor] colorWithAlphaComponent:0.1] CGColor];
+            shapeLayer.strokeColor = [[[UIColor blackColor] colorWithAlphaComponent:0.8] CGColor];
             shapeLayer.fillColor = [[UIColor whiteColor] CGColor];
-            shapeLayer.lineWidth = 1;
+            shapeLayer.lineWidth = 0.1;
             [self.layer addSublayer:shapeLayer];
         }
     }
@@ -115,7 +141,6 @@
     if( !_chartLabelsForX ){
         _chartLabelsForX = [NSHashTable weakObjectsHashTable];
     }
-    
     _xLabels = xLabels;
     CGFloat num = 0;
     if (xLabels.count>=kMaxXLabels) {
@@ -126,7 +151,7 @@
         num = xLabels.count;
     }
     _xLabelWidth = (self.frame.size.width - JAYYLabelwidth)/num;
-    
+    _xAxisLengh = _xLabelWidth *(xLabels.count+1)+chartMargin;
     //横坐标
     for (int i=0; i<xLabels.count; i++) {
         NSString *labelText = xLabels[i];
@@ -139,20 +164,19 @@
     if (_myScrollView.frame.size.width < max-kMaxXLabels) {
         _myScrollView.contentSize = CGSizeMake(max, self.frame.size.height);
     }
-    
     //画竖线
-//    for (int i=0; i<xLabels.count+1; i++) {
-//        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-//        UIBezierPath *path = [UIBezierPath bezierPath];
-//        [path moveToPoint:CGPointMake(JAYYLabelwidth+i*_xLabelWidth,JAYLabelHeight)];
-//        [path addLineToPoint:CGPointMake(JAYYLabelwidth+i*_xLabelWidth,self.frame.size.height-2*JAYLabelHeight)];
-//        [path closePath];
-//        shapeLayer.path = path.CGPath;
-//        shapeLayer.strokeColor = [[[UIColor blackColor] colorWithAlphaComponent:0.1] CGColor];
-//        shapeLayer.fillColor = [[UIColor whiteColor] CGColor];
-//        shapeLayer.lineWidth = 1;
-//        [self.layer addSublayer:shapeLayer];
-//    }
+    for (int i=1; i<xLabels.count+1; i++) {
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        [path moveToPoint:CGPointMake(i*_xLabelWidth+kDotWH,JAYLabelHeight)];
+        [path addLineToPoint:CGPointMake(i*_xLabelWidth+kDotWH,self.frame.size.height-2*JAYLabelHeight)];
+        [path closePath];
+        shapeLayer.path = path.CGPath;
+        shapeLayer.strokeColor = [[[UIColor blackColor] colorWithAlphaComponent:0.4] CGColor];
+        shapeLayer.fillColor = [[UIColor whiteColor] CGColor];
+        shapeLayer.lineWidth = 0.4;
+        [_myScrollView.layer addSublayer:shapeLayer];
+    }
 }
 
 -(void)setColors:(NSArray *)colors
@@ -164,8 +188,11 @@
 {
     _markRange = markRange;
     //
-    
-    
+}
+
+- (void)setGroupMarkRange:(JAYGroupRange)groupMarkRange
+{
+    _groupMarkRange = groupMarkRange;
 }
 
 - (void)setChooseRange:(CGRange)chooseRange
@@ -178,7 +205,7 @@
     _ShowHorizonLine = ShowHorizonLine;
 }
 
-
+#pragma mark -  描点
 -(void)strokeChart
 {
     for (int i=0; i<_yValues.count; i++) {
@@ -186,12 +213,12 @@
         if (childAry.count==0) {
             return;
         }
+        NSInteger max_i =0;
+        NSInteger min_i =0;
         //获取最大最小位置
         CGFloat max = [childAry[0] floatValue];
         CGFloat min = [childAry[0] floatValue];
-        NSInteger max_i;
-        NSInteger min_i;
-        
+    
         for (int j=0; j<childAry.count; j++){
             CGFloat num = [childAry[j] floatValue];
             if (max<=num){
@@ -231,7 +258,7 @@
         }
         [self addPoint:CGPointMake(xPosition, chartCavanHeight - grade * chartCavanHeight+JAYLabelHeight)
                  index:i
-                isShow:isShowMaxAndMinPoint
+                isShow:self.showTextValue
                  value:firstValue];
 
         
@@ -248,6 +275,7 @@
                 [progressline addLineToPoint:point];
                 
                 BOOL isShowMaxAndMinPoint = YES;
+                
                 if (self.ShowMaxMinArray) {
                     if ([self.ShowMaxMinArray[i] intValue]>0) {
                         isShowMaxAndMinPoint = (max_i==index || min_i==index)?NO:YES;
@@ -258,7 +286,7 @@
                 [progressline moveToPoint:point];
                 [self addPoint:point
                          index:i
-                        isShow:isShowMaxAndMinPoint
+                        isShow:self.showTextValue
                          value:[valueString floatValue]];
                 
             }
@@ -271,8 +299,9 @@
         }else{
             _chartLine.strokeColor = [JAYGreen CGColor];
         }
+        //添加数据图线绘画效果
         CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-        pathAnimation.duration = childAry.count*0.4;
+        pathAnimation.duration = childAry.count*0.2;
         pathAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         pathAnimation.fromValue = [NSNumber numberWithFloat:0.0f];
         pathAnimation.toValue = [NSNumber numberWithFloat:1.0f];
@@ -284,26 +313,32 @@
 
 - (void)addPoint:(CGPoint)point index:(NSInteger)index isShow:(BOOL)isHollow value:(CGFloat)value
 {
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(5, 5, 8, 8)];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kDotWH, kDotWH)];
     view.center = point;
     view.layer.masksToBounds = YES;
     view.layer.cornerRadius = 4;
     view.layer.borderWidth = 2;
     view.layer.borderColor = [[_colors objectAtIndex:index] CGColor]?[[_colors objectAtIndex:index] CGColor]:JAYGreen.CGColor;
-    
+    view.backgroundColor = [UIColor whiteColor];
+     [_myScrollView addSubview:view];
+    // 数值的显示
     if (isHollow) {
-        view.backgroundColor = [UIColor whiteColor];
-    }else{
-        view.backgroundColor = [_colors objectAtIndex:index]?[_colors objectAtIndex:index]:JAYGreen;
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(point.x-JAYTagLabelwidth/2.0, point.y-JAYLabelHeight*2, JAYTagLabelwidth, JAYLabelHeight)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(point.x-JAYTagLabelwidth/2.0, point.y-JAYLabelHeight*1.5, JAYTagLabelwidth, JAYLabelHeight)];
         label.font = [UIFont systemFontOfSize:10];
         label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = view.backgroundColor;
+        label.textColor =  [_colors objectAtIndex:index]?[_colors objectAtIndex:index] :JAYGreen;
         label.text = [NSString stringWithFormat:@"%d",(int)value];
         [_myScrollView addSubview:label];
+        //异常点的标识
+        if (value < _markRange.min ||value > _markRange.max) {
+            view.backgroundColor = [UIColor redColor];
+            view.layer.borderColor = [UIColor redColor].CGColor;
+            label.textColor = [UIColor redColor];
+            
+        }
     }
     
-    [_myScrollView addSubview:view];
+    
 }
 
 - (NSArray *)chartLabelsForX

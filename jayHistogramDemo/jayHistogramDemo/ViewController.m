@@ -36,20 +36,7 @@
      在显示时间下面用颜色标明图标代表的是什么...
      */
     /*
-     波形图横轴要求:
-     1.体温监测:
-     5分钟、10分钟、半小时、一小时、两小时、半天,一天;
-     不超过60，下限不低于20;
-     2.体重监测:
-     天、五天、半月、一月;
-     上下限不定;
-     3.血压数据:
-     同时显示收缩压,舒张压
-     天、周平均、月平均
-     两种上下限;
-     4.血糖数据:
-     天、周平均、月平均
-     上下限;
+   
      */
 //    self.view.backgroundColor = JAYYellow;
     //添加柱状图
@@ -80,14 +67,6 @@
     deleteLineBtn.backgroundColor = [UIColor greenColor];
     [deleteLineBtn addTarget:self action:@selector(deleteLineView:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:deleteLineBtn];
-    
-    
-    //
-    UILabel *label  = [[UILabel alloc] initWithFrame:CGRectMake(80, self.view.frame.size.height-50, 100, 30)];
-    label.backgroundColor = [UIColor redColor];
-    _barValueLabel = label;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showValue:) name:@"clickValue" object:nil];
-    [self.view addSubview:label];
 
 }
 
@@ -102,25 +81,41 @@
 //横坐标标题数组
 - (NSArray *)JAYChart_xLableArray:(JAYChart *)chart
 {
-    NSArray  *xLabels = @[@"时间1",@"时间2",@"时间3",@"时间4",@"时间5",@"时间6",@"时间7",@"时间8",@"时间9",@"时间10",@"时间11",@"时间12"];
+    NSArray  *xLabels = @[@"时间1100000",@"时间2\n999",@"时间3",@"时间4",@"时间5",@"时间6",@"时间7",@"时间8",@"时间9",@"时间10",@"时间11",@"时间12"];
     return xLabels;
 }
 
 //数值多重数组
 - (NSArray *)JAYChart_yValueArray:(JAYChart *)chart
 {
-    NSArray *ary = @[@"10",@"20",@"30",@"40",@"50",@"60",@"70",@"80",@"90",@"100",@"110",@"120"];
-    NSArray *ary1 = @[@"72",@"75",@"78",@"82",@"90",@"96",@"140",@"100",@"105",@"103",@"30",@"102"];
-    NSArray  *yValues = @[ary1];//一组数据
-//    yValues = @[ary,ary1];//两组数据
+    NSArray *ary = @[@"99",@"88",@"85",@"89",@"92",@"100",@"111",@"100",@"98",@"112",@"112",@"96"];
+    NSArray *ary1 = @[@"81",@"77",@"68",@"78",@"72",@"73",@"82",@"83",@"80",@"85",@"90",@"68"];
+//    NSArray *ary2 = @[@"70",@"55",@"69",@"59",@"102",@"104",@"121",@"99",@"96",@"39",@"77",@"84"];
+    NSArray  *yValues = @[ary1];//1组数据
+    yValues = @[ary,ary1];//2组数据
+//    yValues = @[ary,ary1,ary2];//3组数据
     return yValues;
 }
 
-//显示数值范围,根据最大数据和最小数据去设置
+//设置Y轴需要显示的数值范围，最大值-最小值
 - (CGRange)JAYChartChooseRangeInLineChart:(JAYChart *)chart
 {
         //这里设置的是需要正常显示的范围,即最大值最小值
-        return CGRangeMake(90, 60);
+        return CGRangeMake(170, 30);
+}
+//2组数值区域
+- (JAYGroupRange)JAYGroupChartMarkRangeInLineChart:(JAYChart *)chart
+{
+    CGRange range1 = CGRangeMake(140, 90);
+    CGRange range2 = CGRangeMake(90, 60);
+    return JAYGroupRangeMake(range1, range2);
+    
+}
+
+//设置正常范围需要渲染的背景
+- (CGRange)JAYChartMarkRangeInLineChart:(JAYChart *)chart
+{
+    return CGRangeMake(120, 60);
 }
 
 //设置多组数据不同柱状条颜色
@@ -140,7 +135,6 @@
                                                withStyle:JAYChartBarStyle];
     chartView.backgroundColor = JAYLightGrey;
     [chartView showInView:self.view];
-    
 }
 
 #pragma mark -添加折线图
@@ -149,7 +143,7 @@
     if (_lineChartView) {
         return;
     }
-    _lineChartView = [[JAYChart alloc]initwithJAYChartDataFrame:CGRectMake(10, 350, [UIScreen mainScreen].bounds.size.width-20, 150)
+    _lineChartView = [[JAYChart alloc]initwithJAYChartDataFrame:CGRectMake(10, 200, [UIScreen mainScreen].bounds.size.width-20, 300)
                                               withSource:self
                                                withStyle:JAYChartLineStyle];
     
@@ -158,6 +152,7 @@
     [_lineChartView showInView:self.view];
     
 }
+
 
 #pragma mark - 删除柱状图
 - (void)deleteHistoGram:(UIButton *)btn

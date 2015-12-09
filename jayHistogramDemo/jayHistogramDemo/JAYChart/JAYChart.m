@@ -41,11 +41,16 @@
 	if (self.chartStyle == JAYChartLineStyle) { //折线图
         if(!_lineChart){
             _lineChart = [[JAYLineChart alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+            _lineChart.showTextValue = YES;//显示数据点的数值
             [self addSubview:_lineChart];
         }
         //选择标记范围
         if ([self.dataSource respondsToSelector:@selector(JAYChartMarkRangeInLineChart:)]) {
             [_lineChart setMarkRange:[self.dataSource JAYChartMarkRangeInLineChart:self]];
+        }
+        //2组数据背景渲染的范围
+        if ([self.dataSource respondsToSelector:@selector(JAYGroupChartMarkRangeInLineChart:)]) {
+            [_lineChart setGroupMarkRange:[self.dataSource JAYGroupChartMarkRangeInLineChart:self]];
         }
         //选择显示范围
         if ([self.dataSource respondsToSelector:@selector(JAYChartChooseRangeInLineChart:)]) {
@@ -83,9 +88,9 @@
                 _lineChart.ShowMaxMinArray = showMaxMinArray;
             }
         }
-        
+        [_lineChart setXLabels:[self.dataSource JAYChart_xLableArray:self]];
+
 		[_lineChart setYValues:[self.dataSource JAYChart_yValueArray:self]];
-		[_lineChart setXLabels:[self.dataSource JAYChart_xLableArray:self]];
         
         /**
          *  这个方法很重要,根据数据进行渲染

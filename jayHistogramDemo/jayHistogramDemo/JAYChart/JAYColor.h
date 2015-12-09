@@ -64,8 +64,24 @@ CGRangeMake(CGFloat max, CGFloat min){
     p.min = min;
     return p;
 }
-
 static const CGRange CGRangeZero = {0,0};
+
+//2组标记
+struct groupRange {
+    CGRange range1;
+    CGRange range2;
+};
+typedef struct groupRange JAYGroupRange;
+CG_INLINE JAYGroupRange JAYGroupRangeMake (CGRange range1, CGRange range2);
+
+CG_INLINE JAYGroupRange
+JAYGroupRangeMake (CGRange range1, CGRange range2){
+    JAYGroupRange g;
+    g.range1 = range1;
+    g.range2 = range2;
+    return g;
+}
+
 
 @interface JAYColor : NSObject
 - (UIImage *)imageFromColor:(UIColor *)color;
