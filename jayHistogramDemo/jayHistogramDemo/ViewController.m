@@ -38,7 +38,7 @@
     /*
    
      */
-//    self.view.backgroundColor = JAYYellow;
+    self.view.backgroundColor = JAYLightGrey;
     //添加柱状图
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     btn.frame = CGRectMake(20, 64, 120, 30);
@@ -101,12 +101,12 @@
 - (CGRange)JAYChartChooseRangeInLineChart:(JAYChart *)chart
 {
         //这里设置的是需要正常显示的范围,即最大值最小值
-        return CGRangeMake(135, 40);
+        return CGRangeMake(210, 30);
 }
 //2组数值区域
 - (JAYGroupRange)JAYGroupChartMarkRangeInLineChart:(JAYChart *)chart
 {
-    CGRange range1 = CGRangeMake(135, 100);
+    CGRange range1 = CGRangeMake(140, 90);
     CGRange range2 = CGRangeMake(90, 60);
     return JAYGroupRangeMake(range1, range2);
     
@@ -147,7 +147,7 @@
                                               withSource:self
                                                withStyle:JAYChartLineStyle];
     
-    _lineChartView.backgroundColor = JAYLightGrey;
+    _lineChartView.backgroundColor = JAYWhite;
     _lineChartView.showRange = YES;
     [_lineChartView showInView:self.view];
     
@@ -158,7 +158,7 @@
 - (void)deleteHistoGram:(UIButton *)btn
 {
     [chartView removeFromSuperview];
-    chartView = nil;
+     chartView = nil;
     _barValueLabel.text = nil;
 }
 
